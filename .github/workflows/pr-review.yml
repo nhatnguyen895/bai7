@@ -1,0 +1,33 @@
+name: Automated Code Review
+
+# CÔNG TẮC: Chỉ kích hoạt khi có Đơn xin sáp nhập (Pull Request) chĩa thẳng vào nhánh main
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+
+    # Cấp quyền cho con Bot được phép viết bình luận vào Pull Request của bạn
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # Gọi Bot Reviewdog chạy Checkstyle (Dùng bộ luật chuẩn của Sun Microsystems)
+      - name: Run Checkstyle and Comment
+        uses: reviewdog/action-checkstyle@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }} # cho phép con Bot này tương tác với giao diện PR
+          reporter: github-pr-review # Chế độ soi từng dòng và comment thẳng vào giao diện PR
+          level: error # Phát hiện lỗi là đánh sập build (chữ thập đỏ)
+          fail_on_error: true
