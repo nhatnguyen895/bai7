@@ -25,9 +25,9 @@ jobs:
 
       # Gọi Bot Reviewdog chạy Checkstyle (Dùng bộ luật chuẩn của Sun Microsystems)
       - name: Run Checkstyle and Comment
-        uses: reviewdog/action-checkstyle@v3
+        uses: dbelyaev/action-checkstyle@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }} # cho phép con Bot này tương tác với giao diện PR
           reporter: github-pr-review # Chế độ soi từng dòng và comment thẳng vào giao diện PR
-          level: error # Phát hiện lỗi là đánh sập build (chữ thập đỏ)
+          level: warning # Phát hiện lỗi là đánh sập build (chữ thập đỏ)
           fail_on_error: true
